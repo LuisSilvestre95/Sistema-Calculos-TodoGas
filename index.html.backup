@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sistema Profesional de Cálculo de Redes de Gas Natural - TODO GAS SYR S.A.S">
+    <title>TODO GAS SYR S.A.S - Cálculos de Gas Natural</title>
+    
+    <!-- ESTILOS CSS -->
+    <link rel="stylesheet" href="assets/css/styles.css">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- jsPDF + AutoTable -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.7.1/jspdf.plugin.autotable.min.js"></script>
+    
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <style>
+        /* Estilos inline adicionales para garantizar visibilidad */
+        :root {
+                bodyStyles: { fontSize: 7 },
+                alternateRowStyles: { fillColor: [242, 252, 242] },
+                columnStyles: {
+                    11: {
+                        fontStyle: 'bold',
+                        fillColor: (row) => {
+                            const v = rows[row.index]?.[11] || '';
+                            return v === 'APROBADO' ? [0, 168, 107] : v === 'RECHAZADO' ? [220, 53, 69] : [255, 255, 255];
+                        },
+                        textColor: (row) => {
+                            const v = rows[row.index]?.[11] || '';
+                            return v === 'APROBADO' || v === 'RECHAZADO' ? [255, 255, 255] : [0, 0, 0];
+                        }
+                    }
+                }
+            });
+
+            const tableFinalY = doc.lastAutoTable?.finalY || y;
+
+            // Resumen técnico opcional
+            if (includeSummary) {
+                const total = rows.length;
+                const aprob = rows.filter(r => (r[11] || '').toUpperCase() === 'APROBADO').length;
+                const rechaz = total - aprob;
+                const resumenY = tableFinalY + 6;
+                doc.autoTable({
+                    startY: resumenY,
+                    margin: { left: margin, right: margin },
+                    head: [['Resumen técnico']],
+                    body: [
+                        [`Tramos: ${total} | Aprobados: ${aprob} | Rechazados: ${rechaz}`],
+                        ['Criterios: Velocidad ≤ 6 m/s, Pérdida ≤ 10%, Pf ≥ 18 mbar']
+                    ],
+                    theme: 'grid',
+                    styles: { fontSize: 8 },
+                    headStyles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' }
+                });
+            }
+
+            // Firma/Certificación opcional
+            if (includeSignature) {
+                const finalY = doc.lastAutoTable?.finalY || tableFinalY;
+                const signW = 70, signH = 28;
+                const signX = (w - signW) / 2;
+                const signY = finalY + 10;
+                doc.setDrawColor(0,0,0);
+                doc.setLineWidth(0.4);
+                doc.rect(signX, signY, signW, signH);
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(9);
+                doc.text('Polidoro Saavedra P', w/2, signY + 10, { align: 'center' });
+                doc.setFontSize(8);
+                doc.text('Diseño Polidoro Saavedra', w/2, signY + 15, { align: 'center' });
+                doc.text('C.C. 4.121.669', w/2, signY + 20, { align: 'center' });
+                doc.text('Registro SENA 1300196', w/2, signY + 25, { align: 'center' });
+            }
+
+            // Metadatos
+            doc.setProperties({
+                title: `BAJA PRESIÓN - ${c1}`,
+                author: 'TODO GAS SYR S.A.S',
+                subject: 'Cálculos de Redes de Gas Natural'
+            });
+                        body: [
+                            [`Tramos: ${total} | Aprobados: ${aprob} | Rechazados: ${rechaz}`],
+                            ['Criterios: Velocidad ≤ 6 m/s, Pérdida ≤ 10%, Pf ≥ 18 mbar']
+                        ],
+                        theme: 'grid',
+                        styles: { fontSize: 8 },
+                        headStyles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' }
+                    });
+                }
+
+                // Firma/Certificación opcional
+                if (includeSignature) {
+                    const finalY = doc.lastAutoTable?.finalY || tableFinalY;
+                    const signW = 70, signH = 28;
+                    const signX = (w - signW) / 2;
+                    const signY = finalY + 10;
+                    doc.setDrawColor(0,0,0);
+                    doc.setLineWidth(0.4);
+                    doc.rect(signX, signY, signW, signH);
+                    doc.setFont('helvetica', 'normal');
+                    doc.setFontSize(9);
+                    doc.text('Polidoro Saavedra P', w/2, signY + 10, { align: 'center' });
+                    doc.setFontSize(8);
+                    doc.text('Diseño Polidoro Saavedra', w/2, signY + 15, { align: 'center' });
+                    doc.text('C.C. 4.121.669', w/2, signY + 20, { align: 'center' });
+                    doc.text('Registro SENA 1300196', w/2, signY + 25, { align: 'center' });
+                }
+
+                // Metadatos
+                doc.setProperties({
+                    title: `BAJA PRESIÓN - ${c1}`,
+                    author: 'TODO GAS SYR S.A.S',
+                    subject: 'Cálculos de Redes de Gas Natural'
+                });
+        .excel-table td {
+            padding: 12px 8px;
+            border: 1px solid #e0e0e0;
+            text-align: center;
+            font-size: 0.9rem;
+            background: white;
+            min-height: 40px;
+            display: table-cell;
+            vertical-align: middle;
+        }
+        
+        .excel-table tbody tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .excel-table tbody tr:hover {
+            background: #fff9e6;
+            transition: 0.2s;
+        }
+        
+        /* CAMPOS MANUALES (Entrada) */
+        .row-input input, 
+        .row-input select {
+            width: 100%;
+            padding: 8px 8px;
+            border: 2px solid #0066cc;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            background: white;
+            color: var(--brand-blue);
+            cursor: text;
+            transition: all 0.2s ease;
+        }
+        
+        .row-input input::placeholder {
+            color: #999;
+            opacity: 0.7;
+        }
+        
+        .row-input input:focus, 
+        .row-input select:focus {
+            border: 2px solid var(--brand-accent);
+            background: #fffef0;
+            outline: none;
+            box-shadow: 0 0 12px rgba(255, 183, 3, 0.4);
+        }
+        
+        /* CAMPOS AUTOMÁTICOS (Cálculo) */
+        .row-calc {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%) !important;
+            font-weight: 700;
+            color: #1b5e20;
+            border: 1px solid #81c784;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            text-align: center;
+            cursor: default;
+        }
+        
+        .status-aprobado {
+            background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%) !important;
+            color: white !important;
+            font-weight: 800;
+            text-transform: uppercase;
+            border-radius: 8px;
+            padding: 6px 10px !important;
+            box-shadow: 0 3px 10px rgba(76, 175, 80, 0.4);
+        }
+        
+        .status-rechazado {
+            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%) !important;
+            color: white !important;
+            font-weight: 800;
+            text-transform: uppercase;
+            border-radius: 8px;
+            padding: 6px 10px !important;
+            box-shadow: 0 3px 10px rgba(244, 67, 54, 0.4);
+        }
+        
+        /* BOTONES */
+        .btn-excel {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-excel:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn-add-row {
+            background: linear-gradient(135deg, var(--brand-accent) 0%, var(--brand-accent-dark) 100%);
+            color: var(--brand-blue);
+        }
+        
+        .btn-export {
+            background: linear-gradient(135deg, var(--success) 0%, #008f5f 100%);
+            color: white;
+        }
+        
+        /* TABS */
+        .tabs-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            border-bottom: 3px solid #e0e0e0;
+            padding-bottom: 5px;
+        }
+        
+        .tab-button {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
+            border: none;
+            padding: 15px 35px;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 10px 10px 0 0;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .tab-button:hover {
+            transform: translateY(-3px);
+        }
+        
+        .tab-button.active {
+            background: linear-gradient(135deg, var(--brand-blue) 0%, var(--brand-light) 100%);
+            color: white;
+            transform: translateY(-5px);
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* NOTAS */
+        .designer-note {
+            margin-top: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #fff9e6 0%, #fff3cc 100%);
+            border-left: 5px solid var(--brand-accent);
+            border-radius: 10px;
+            font-size: 0.9rem;
+            color: #555;
+        }
+        
+        .designer-note strong {
+            color: var(--brand-blue);
+        }
+        
+        /* FOOTER */
+        .main-footer {
+            margin-top: 50px;
+            padding: 30px 0;
+            background: linear-gradient(135deg, var(--brand-blue) 0%, #001a33 100%);
+            color: white;
+            border-top: 5px solid var(--brand-accent);
+            text-align: center;
+        }
+        
+        /* TABLA MEJORADA */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .excel-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            font-size: 0.85rem;
+        }
+        
+        .excel-table thead {
+            background: linear-gradient(135deg, var(--brand-blue) 0%, #001a33 100%);
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .excel-table th {
+            padding: 12px 8px;
+            font-weight: 600;
+            text-align: center;
+            white-space: nowrap;
+            border: 1px solid #ddd;
+            min-width: 60px;
+            font-size: 0.8rem;
+        }
+        
+        .excel-table td {
+            padding: 10px 6px;
+            border: 1px solid #ddd;
+            text-align: center;
+            white-space: nowrap;
+        }
+        
+        .excel-table tbody tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        
+        .excel-table tbody tr:hover {
+            background: #f0f7ff;
+            transition: 0.2s;
+        }
+        
+        .row-input input, .row-input select {
+            width: 100%;
+            padding: 6px 4px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            text-align: center;
+        }
+        
+        .row-input input:focus, .row-input select:focus {
+            outline: none;
+            border: 2px solid var(--brand-light);
+            background: #f0f7ff;
+            box-shadow: 0 0 8px rgba(0, 102, 204, 0.3);
+        }
+        
+        .row-calc {
+            background: #f0f0f0;
+            font-weight: 500;
+            color: var(--brand-blue);
+        }
+        
+        .btn-row-action {
+            padding: 4px 10px;
+            font-size: 0.75rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        
+        .btn-delete {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .btn-delete:hover {
+            background: #c82333;
+        }
+        
+        /* OCULTAR FÓRMULAS */
+        .designer-note {
+            display: none;
+        }
+        
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .header-title { font-size: 1.5rem; }
+            .logo-container { width: 60px; height: 60px; }
+            .logo-container i { font-size: 2rem; }
+            .tab-button { padding: 12px 20px; font-size: 0.9rem; }
+            .excel-table { font-size: 0.7rem; }
+            .excel-table th { padding: 8px 4px; font-size: 0.7rem; }
+            .excel-table td { padding: 6px 3px; }
+            .row-input input, .row-input select { padding: 4px 3px; font-size: 0.7rem; }
+            .row-calc { padding: 4px 2px; font-size: 0.7rem; }
+            .btn-excel { padding: 10px 20px; font-size: 0.85rem; }
+            .btn-row-action { padding: 3px 8px; font-size: 0.65rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="main-header">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8 d-flex align-items-center gap-4">
+                <div class="logo-container">
+                    <i class="fas fa-fire-flame-curved"></i>
+                </div>
+                <div>
+                    <h1 class="header-title">
+                        <i class="fas fa-industry me-2"></i>
+                        TODO GAS SYR S.A.S
+                    </h1>
+                    <p class="header-subtitle mb-0">
+                        <i class="fas fa-calculator me-2"></i>
+                        Sistema Profesional de Cálculo de Redes de Gas Natural
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4 text-end d-none d-md-block">
+                <div style="font-size: 0.9rem; opacity: 0.95;">
+                    <div class="mb-2"><i class="fas fa-map-marker-alt me-2"></i><strong>Colombia</strong></div>
+                    <div class="mb-2"><i class="fas fa-phone-alt me-2"></i>3223618360 - 3209485534</div>
+                    <div><i class="fas fa-id-card me-2"></i>NIT: 901.126.243-3</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="container py-5">
+    
+    <!-- TABS -->
+    <div class="tabs-container">
+        <button class="tab-button active" onclick="showTab('baja')">
+            <i class="fas fa-arrow-trend-down"></i>
+            BAJA PRESIÓN
+        </button>
+        <button class="tab-button" onclick="showTab('media')">
+            <i class="fas fa-arrow-trend-up"></i>
+            MEDIA PRESIÓN
+        </button>
+    </div>
+
+    <!-- ========== BAJA PRESIÓN ========== -->
+    <div id="baja" class="tab-content active">
+        <div class="excel-section">
+            <h2 class="section-title">
+                <i class="fas fa-arrow-trend-down"></i>
+                CÁLCULOS BAJA PRESIÓN
+            </h2>
+
+            <!-- DATOS DEL CLIENTE -->
+            <div class="client-data-box">
+                <h5 class="client-data-title">
+                    <i class="fas fa-user-tie"></i>
+                    DATOS DEL CLIENTE
+                </h5>
+                <div class="client-data">
+                    <div class="data-input">
+                        <label><i class="fas fa-user"></i> NOMBRE</label>
+                        <input type="text" id="bajaClientName" placeholder="Nombre completo" />
+                    </div>
+                    <div class="data-input">
+                        <label><i class="fas fa-id-card"></i> CÉDULA</label>
+                        <input type="text" id="bajaCedula" placeholder="Ej: 79.295.777" />
+                    </div>
+                    <div class="data-input">
+                        <label><i class="fas fa-map-marker-alt"></i> DIRECCIÓN</label>
+                        <input type="text" id="bajaDireccion" placeholder="Dirección" />
+                    </div>
+                    <div class="data-input">
+                        <label><i class="fas fa-city"></i> MUNICIPIO</label>
+                        <input type="text" id="bajaMunicipio" placeholder="Municipio" />
+                    </div>
+                    <div class="data-input">
+                        <label><i class="fas fa-phone"></i> TELÉFONO</label>
+                        <input type="text" id="bajaTelefono" placeholder="Teléfono" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- TABLA BAJA -->
+            <h5 class="section-title" style="font-size: 1.1rem;">
+                <i class="fas fa-table"></i>
+                DETALLES DE CÁLCULOS
+            </h5>
+            
+            <div class="table-container">
+                <table class="excel-table" id="tablaBajaPresion">
+                    <thead>
+                        <tr>
+                            <th style="min-width: 65px;">Inicio<br>(B)</th>
+                            <th style="min-width: 65px;">Fin<br>(C)</th>
+                            <th style="min-width: 95px;">Caudal<br>(m³/h)</th>
+                            <th style="min-width: 85px;">Longitud<br>(m)</th>
+                            <th style="min-width: 85px;">L. Equiv<br>(m)</th>
+                            <th style="min-width: 85px;">Diámetro<br>(mm)</th>
+                            <th style="min-width: 85px;">Pi<br>(mbar)</th>
+                            <th style="min-width: 85px;">Pérdida<br>(mbar)</th>
+                            <th style="min-width: 85px;">Pf<br>(mbar)</th>
+                            <th style="min-width: 85px;">Velocidad<br>(m/s)</th>
+                            <th style="min-width: 95px;">Material<br>(L)</th>
+                            <th style="min-width: 105px;">Estado</th>
+                            <th style="min-width: 85px;">Acciones</th>
+                            <th style="min-width: 120px;">Presión inicial Pi<br>(mbar)</th>
+                            <th style="min-width: 120px;">Pérdida<br>(mbar)</th>
+                            <th style="min-width: 115px;">Presión final Pf<br>(mbar)</th>
+                            <th style="min-width: 120px;">Velocidad<br>(m/s)</th>
+                            <th style="min-width: 120px;">Material<br>(L)</th>
+                            <th style="min-width: 120px;">Estado</th>
+                            <th style="min-width: 80px;">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaBAJA">
+                        <!-- Filas dinámicas -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="text-align: right; margin-top: 20px; display: flex; gap: 12px; justify-content: flex-end; flex-wrap: wrap;">
+                <button class="btn-excel btn-add-row" onclick="addRowBAJA()">
+                    <i class="fas fa-plus-circle"></i> Agregar Tramo
+                </button>
+                <button class="btn-excel btn-export" onclick="exportBAJAPDF()">
+                    <i class="fas fa-file-pdf"></i> Exportar PDF
+                </button>
+            </div>
+
+            <div class="designer-note" style="display: none;">
+                <div style="display: flex; align-items: start; gap: 15px;">
+                    <i class="fas fa-info-circle" style="font-size: 1.5rem; color: var(--brand-accent);"></i>
+                    <div>
+                        <strong>FÓRMULAS EXCEL IMPLEMENTADAS:</strong>
+                        <ul style="margin-top: 10px;">
+                            <li><strong>F (LE):</strong> <code>=E × 1.2</code></li>
+                            <li><strong>I (Pérdida):</strong> <code>=23200 × 0.67 × F × D^1.82 × G^-4.82</code> (Renouard)</li>
+                            <li><strong>J (Pf):</strong> <code>=H - I</code></li>
+                            <li><strong>K (Velocidad):</strong> <code>=345 × D × ((J/1000 + 0.7236)^-1) × G^-2</code></li>
+                        </ul>
+                        <p style="margin-top: 10px; margin-bottom: 0;"><strong>Validación:</strong> Velocidad ≤ 6 m/s | Pérdida ≤ 10% | Pf ≥ 18 mbar</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== MEDIA PRESIÓN ========== -->
+    <div id="media" class="tab-content">
+        <div class="excel-section">
+            <h2 class="section-title">
+                <i class="fas fa-arrow-trend-up"></i>
+                CÁLCULOS MEDIA PRESIÓN
+            </h2>
+
+            <!-- DATOS DEL CLIENTE -->
+            <div class="client-data-box">
+                <h5 class="client-data-title">
+                    <i class="fas fa-user-tie"></i>
+                    DATOS DEL CLIENTE
+                </h5>
+                <div class="client-data">
+                    <div class="data-input">
+                        <label><i class="fas fa-user"></i> NOMBRE</label>
+                        <input type="text" id="mediaClientName" placeholder="Nombre completo" />
+                    </div>
+                    <div class="data-input">
+                        <label><i class="fas fa-id-card"></i> CÉDULA</label>
+                        <input type="text" id="mediaCedula" placeholder="79.295.777" />
+                    </div>
+                    <div class="data-input">
+                        <label><i class="fas fa-map-marker-alt"></i> DIRECCIÓN</label>
+                        <input type="text" id="mediaDireccion" placeholder="Dirección" />
+                    </div>
+                    <div class="data-input">
+                        <label><i class="fas fa-phone"></i> TELÉFONO</label>
+                        <input type="text" id="mediaTelefono" placeholder="Teléfono" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- TABLA MEDIA -->
+            <h5 class="section-title" style="font-size: 1.1rem;">
+                <i class="fas fa-table"></i>
+                DETALLES DE CÁLCULOS
+            </h5>
+            
+            <div class="table-container">
+                <table class="excel-table" id="tablaMediaPresion">
+                    <thead>
+                        <tr>
+                            <th style="min-width: 65px;">Inicio<br>(B)</th>
+                            <th style="min-width: 65px;">Fin<br>(C)</th>
+                            <th style="min-width: 90px;">Caudal<br>(m³/h)</th>
+                            <th style="min-width: 75px;">Ø Nom<br>(D)</th>
+                            <th style="min-width: 75px;">Ø Int<br>(mm)</th>
+                            <th style="min-width: 75px;">Long.<br>(m)</th>
+                            <th style="min-width: 75px;">L.Equiv<br>(m)</th>
+                            <th style="min-width: 75px;">L.Total<br>(m)</th>
+                            <th style="min-width: 80px;">P1<br>(mbar)</th>
+                            <th style="min-width: 80px;">P abs<br>(mbar)</th>
+                            <th style="min-width: 80px;">P2 abs<br>(mbar)</th>
+                            <th style="min-width: 80px;">P2<br>(mbar)</th>
+                            <th style="min-width: 70px;">PSI<br>(Q)</th>
+                            <th style="min-width: 80px;">Pérd %<br>Abs</th>
+                            <th style="min-width: 80px;">Pérd %<br>Man</th>
+                            <th style="min-width: 100px;">Estado<br>Presión</th>
+                            <th style="min-width: 80px;">Veloc.<br>(m/s)</th>
+                            <th style="min-width: 100px;">Estado<br>Velocidad</th>
+                            <th style="min-width: 85px;">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaMedia">
+                        <!-- Filas dinámicas -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="text-align: right; margin-top: 20px; display: flex; gap: 12px; justify-content: flex-end; flex-wrap: wrap;">
+                <button class="btn-excel btn-add-row" onclick="addRowMedia()">
+                    <i class="fas fa-plus-circle"></i> Agregar Tramo
+                </button>
+                <button class="btn-excel btn-export" onclick="exportMediaPDF()">
+                    <i class="fas fa-file-pdf"></i> Exportar PDF
+                </button>
+            </div>
+
+            <div class="designer-note" style="display: none;">
+                <div style="display: flex; align-items: start; gap: 15px;">
+                    <i class="fas fa-info-circle" style="font-size: 1.5rem; color: var(--brand-accent);"></i>
+                    <div>
+                        <strong>FÓRMULAS EXCEL IMPLEMENTADAS:</strong>
+                        <ul style="margin-top: 10px;">
+                            <li><strong>J (LE):</strong> <code>=F × 0.2</code></li>
+                            <li><strong>K (LT):</strong> <code>=F + J</code></li>
+                            <li><strong>M (P abs):</strong> <code>=L + 723.6</code></li>
+                            <li><strong>N (P²):</strong> <code>=M²</code></li>
+                            <li><strong>O (P2abs):</strong> <code>=√(N - (C × 0.67^0.425 × K^0.576 / (4.61E-05 × E^2.725))^1.74)</code></li>
+                            <li><strong>P (P2):</strong> <code>=O - 723.6</code></li>
+                            <li><strong>Q (PSI):</strong> <code>=(P × 20) / 1380</code></li>
+                            <li><strong>R (%Abs):</strong> <code>=(M - O) / M</code></li>
+                            <li><strong>S (%Man):</strong> <code>=(L - P) / L</code></li>
+                            <li><strong>W (Vel):</strong> <code>=354 × C × (0.7236 + P/1000)^-1 × E^-2</code></li>
+                        </ul>
+                        <p style="margin-top: 10px; margin-bottom: 0;"><strong>Validación:</strong> Pérdida < 10% | Velocidad < 20 m/s</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="main-footer">
+    <div class="container">
+        <p style="margin-bottom: 5px; font-size: 1.1rem;">
+            <strong style="color: var(--brand-accent);">TODO GAS SYR S.A.S</strong> - Sistema de Cálculos de Gas
+        </p>
+        <p style="opacity: 0.9; font-size: 0.9rem;">
+            <i class="fas fa-user-tie me-2"></i>
+            Diseño y Cálculos: Polidoro Saavedra | CC 4.121.669 | Registro SENA 1300196
+        </p>
+        <p style="opacity: 0.85; font-size: 0.85rem; margin-top: 10px;">
+            © 2026 - Todos los derechos reservados | 
+            <i class="fas fa-map-marker-alt ms-2 me-1"></i>Colombia | 
+            <i class="fas fa-phone ms-2 me-1"></i>3223618360 - 3209485534 |
+        </p>
+    </div>
+</footer>
+
+<script>
+// ==================== DATOS GLOBALES ====================
+let rowsBAJA = [];
+let rowsMedia = [];
+
+// ==================== FUNCIONES DE TABS ====================
+function showTab(tab) {
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-button').forEach(el => el.classList.remove('active'));
+    
+    document.getElementById(tab).classList.add('active');
+    event.target.classList.add('active');
+}
+
+// ==================== BAJA PRESIÓN ====================
+function addRowBAJA() {
+    const tabla = document.getElementById('tablaBAJA');
+    const rowNum = rowsBAJA.length + 1;
+    
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+        <td class="row-input"><input type="text" value="A" class="inicio"></td>
+        <td class="row-input"><input type="text" value="B" class="fin"></td>
+        <td class="row-input"><input type="number" step="0.01" class="caudal" placeholder="0.00"></td>
+        <td class="row-input"><input type="number" step="0.01" class="longitud" placeholder="0.00"></td>
+        <td class="row-calc le">-</td>
+        <td class="row-input"><input type="number" step="0.1" class="diametro" placeholder="0.0"></td>
+           <td class="${rowNum === 1 ? 'row-input' : 'row-calc'}">
+              <input type="number" step="0.1" class="pi" ${rowNum === 1 ? '' : 'readonly'} placeholder="0.0"
+                    style="${rowNum === 1 
+                        ? 'border: 2px solid #0066cc; background: white; color: var(--brand-blue);'
+                        : 'border: 1px solid #81c784; background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); color: #1b5e20; font-weight: 700; cursor: not-allowed;'}"
+                    title="${rowNum === 1 ? 'Ingrese presión inicial' : 'Calculado automáticamente'}">
+           </td>
+        <td class="row-calc perdida">-</td>
+        <td class="row-calc pf">-</td>
+        <td class="row-calc velocidad">-</td>
+        <td class="row-input">
+            <select class="material">
+                <option value="PE AL PE">PE AL PE</option>
+                <option value="Cobre">Cobre</option>
+                <option value="Acero">Acero</option>
+            </select>
+        </td>
+        <td class="row-calc estado">-</td>
+        <td style="text-align: center;">
+            <button class="btn-row-action btn-delete" onclick="deleteRowBAJA(this)">
+                <i class="fas fa-trash-alt"></i>
+            </button>
+        </td>
+    `;
+    
+    tabla.appendChild(tr);
+    rowsBAJA.push({});
+    
+    // Listeners
+    tr.querySelectorAll('input, select').forEach(input => {
+        input.addEventListener('input', () => calculateRowBAJA(tr, rowNum - 1));
+    });
+    
+    if (rowNum === 1) calculateRowBAJA(tr, 0);
+}
+
+function deleteRowBAJA(btn) {
+    const tr = btn.closest('tr');
+    const rowIndex = Array.from(tr.parentNode.children).indexOf(tr);
+    
+    if (rowsBAJA.length === 1) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Advertencia',
+            text: 'Debe mantener al menos una fila en la tabla'
+        });
+        return;
+    }
+    
+    tr.remove();
+    rowsBAJA.splice(rowIndex, 1);
+    
+    // Recalcular filas posteriores
+    const filas = document.querySelectorAll('#tablaBAJA tr');
+    filas.forEach((fila, idx) => {
+        calculateRowBAJA(fila, idx);
+    });
+}
+
+function calculateRowBAJA(tr, rowIndex) {
+    const caudal = parseFloat(tr.querySelector('.caudal').value) || 0;
+    const longitud = parseFloat(tr.querySelector('.longitud').value) || 0;
+    const diametro = parseFloat(tr.querySelector('.diametro').value) || 0;
+    let pi = parseFloat(tr.querySelector('.pi').value) || 0;
+    
+    // Continuidad automática
+    if (rowIndex > 0) {
+        const previousRow = document.querySelectorAll('#tablaBAJA tr')[rowIndex - 1];
+        const pf = parseFloat(previousRow.querySelector('.pf').textContent) || 0;
+        tr.querySelector('.pi').value = pf.toFixed(3);
+        pi = pf;
+    }
+    
+    // F: LE = E * 1.2
+    const le = (longitud * 1.2).toFixed(3);
+    
+    // I: Pérdida = 23200 * 0.67 * F * D^1.82 * G^-4.82
+    const perdida = (23200 * 0.67 * parseFloat(le) * Math.pow(caudal, 1.82) * Math.pow(diametro, -4.82)).toFixed(3);
+    
+    // J: Pf = H - I
+    const pf = Math.max(0, (pi - parseFloat(perdida))).toFixed(3);
+    
+    // K: Velocidad = 345 * D * ((J/1000 + 0.7236)^-1) * G^-2
+    const presionAbsBar = (parseFloat(pf) / 1000) + 0.7236;
+    const velocidad = (presionAbsBar > 0) 
+        ? (345 * caudal * Math.pow(presionAbsBar, -1) * Math.pow(diametro, -2)).toFixed(2)
+        : '0.00';
+    
+    // Validación
+    const perdidaPorc = pi > 0 ? (parseFloat(perdida) / pi * 100) : 0;
+    const estado = (parseFloat(velocidad) <= 6 && perdidaPorc <= 10 && parseFloat(pf) >= 18) ? 'APROBADO' : 'RECHAZADO';
+    
+    // Actualizar UI
+    tr.querySelector('.le').textContent = le;
+    tr.querySelector('.perdida').textContent = perdida;
+    tr.querySelector('.pf').textContent = pf;
+    tr.querySelector('.velocidad').textContent = velocidad;
+    tr.querySelector('.estado').textContent = estado;
+    tr.querySelector('.estado').className = 'row-calc estado ' + (estado === 'APROBADO' ? 'status-aprobado' : 'status-rechazado');
+    
+    // Recalcular siguiente
+    const nextRow = document.querySelectorAll('#tablaBAJA tr')[rowIndex + 1];
+    if (nextRow) calculateRowBAJA(nextRow, rowIndex + 1);
+}
+
+// ==================== MEDIA PRESIÓN ====================
+function addRowMedia() {
+    const tabla = document.getElementById('tablaMedia');
+    const rowNum = rowsMedia.length + 1;
+    
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+        <td class="row-input"><input type="text" value="A" class="inicio"></td>
+        <td class="row-input"><input type="text" value="B" class="fin"></td>
+        <td class="row-input"><input type="number" step="0.01" class="caudal" placeholder="0.00"></td>
+        <td class="row-input"><input type="text" class="diamNom" placeholder="1/2"></td>
+        <td class="row-input"><input type="number" step="0.1" class="diamInt" placeholder="0.0"></td>
+        <td class="row-input"><input type="number" step="0.01" class="longitud" placeholder="0.00"></td>
+        <td style="display:none;"><input type="number" step="1" value="0" class="tee"></td>
+        <td style="display:none;"><input type="number" step="1" value="0" class="codos"></td>
+        <td style="display:none;"><input type="number" step="1" value="0" class="valvulas"></td>
+        <td class="row-calc le">-</td>
+        <td class="row-calc lt">-</td>
+        <td class="row-input"><input type="number" step="0.1" class="p1" ${rowNum === 1 ? '' : 'readonly'} placeholder="0.0" style="${rowNum === 1 ? 'border: 2px solid #0066cc; background: white;' : 'border: 2px solid #999; background: #f5f5f5; color: #666; cursor: not-allowed; font-weight: 600;'}" title="${rowNum === 1 ? 'Ingrese presión inicial' : 'Calculado automáticamente'}"></td>
+        <td class="row-calc pAbs">-</td>
+        <td class="row-calc p2Abs">-</td>
+        <td class="row-calc pf">-</td>
+        <td class="row-calc psi">-</td>
+        <td class="row-calc perdAbs">-</td>
+        <td class="row-calc perdMan">-</td>
+        <td class="row-calc estadoPerd">-</td>
+        <td class="row-calc velocidad">-</td>
+        <td class="row-calc estadoVel">-</td>
+        <td style="text-align: center;">
+            <button class="btn-row-action btn-delete" onclick="deleteRowMedia(this)">
+                <i class="fas fa-trash-alt"></i>
+            </button>
+        </td>
+    `;
+    
+    tabla.appendChild(tr);
+    rowsMedia.push({});
+    
+    // Listeners
+    tr.querySelectorAll('input').forEach(input => {
+        input.addEventListener('input', () => calculateRowMedia(tr, rowNum - 1));
+    });
+    
+    if (rowNum === 1) calculateRowMedia(tr, 0);
+}
+
+function deleteRowMedia(btn) {
+    const tr = btn.closest('tr');
+    const rowIndex = Array.from(tr.parentNode.children).indexOf(tr);
+    
+    if (rowsMedia.length === 1) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Advertencia',
+            text: 'Debe mantener al menos una fila en la tabla'
+        });
+        return;
+    }
+    
+    tr.remove();
+    rowsMedia.splice(rowIndex, 1);
+    
+    // Recalcular filas posteriores
+    const filas = document.querySelectorAll('#tablaMedia tr');
+    filas.forEach((fila, idx) => {
+        calculateRowMedia(fila, idx);
+    });
+}
+
+function calculateRowMedia(tr, rowIndex) {
+    const caudal = parseFloat(tr.querySelector('.caudal').value) || 0;
+    const diamInt = parseFloat(tr.querySelector('.diamInt').value) || 0;
+    const longitud = parseFloat(tr.querySelector('.longitud').value) || 0;
+    let p1 = parseFloat(tr.querySelector('.p1').value) || 0;
+    
+    // Continuidad automática
+    if (rowIndex > 0) {
+        const previousRow = document.querySelectorAll('#tablaMedia tr')[rowIndex - 1];
+        const pf = parseFloat(previousRow.querySelector('.pf').textContent) || 0;
+        tr.querySelector('.p1').value = pf.toFixed(3);
+        p1 = pf;
+    }
+    
+    const PATM = 723.6;
+    
+    // J: LE = F * 0.2
+    const le = (longitud * 0.2).toFixed(3);
+    
+    // K: LT = F + J
+    const lt = (longitud + parseFloat(le)).toFixed(3);
+    
+    // M: P abs = L + 723.6
+    const pAbs = (p1 + PATM).toFixed(1);
+    
+    // N: P² = M²
+    const p2 = Math.pow(parseFloat(pAbs), 2).toFixed(1);
+    
+    // O: P2abs = √(N - (C*0.67^0.425*K^0.576/(4.61E-05*E^2.725))^1.74)
+    const term1 = caudal * Math.pow(0.67, 0.425) * Math.pow(parseFloat(lt), 0.576);
+    const term2 = 4.61e-5 * Math.pow(diamInt, 2.725);
+    const term3 = Math.pow(term1 / term2, 1.74);
+    const p2AbsQuad = Math.max(0, Math.pow(parseFloat(pAbs), 2) - term3);
+    const p2Abs = Math.sqrt(p2AbsQuad).toFixed(1);
+    
+    // P: P2 = O - 723.6
+    const pf = (parseFloat(p2Abs) - PATM).toFixed(1);
+    
+    // Q: PSI = (P*20)/1380
+    const psi = (parseFloat(pf) * 20 / 1380).toFixed(2);
+    
+    // R: %Abs = (M-O)/M
+    const perdAbs = (parseFloat(pAbs) > 0) ? ((parseFloat(pAbs) - parseFloat(p2Abs)) / parseFloat(pAbs)) : 0;
+    
+    // S: %Man = (L-P)/L
+    const perdMan = (p1 > 0) ? ((p1 - parseFloat(pf)) / p1) : 0;
+    
+    // W: Vel = 354*C*(0.7236+P/1000)^-1*E^-2
+    const presAbsBar = (parseFloat(pf) / 1000) + 0.7236;
+    const velocidad = (presAbsBar > 0) 
+        ? (354 * caudal * Math.pow(presAbsBar, -1) * Math.pow(diamInt, -2)).toFixed(2)
+        : '0.00';
+    
+    // Estados
+    const estadoPerd = (perdMan < 0.10) ? 'APROBADO' : 'NO APROBADO';
+    const estadoVel = (parseFloat(velocidad) < 20) ? 'APROBADO' : 'NO APROBADO';
+    
+    // Actualizar UI
+    tr.querySelector('.le').textContent = le;
+    tr.querySelector('.lt').textContent = lt;
+    tr.querySelector('.pAbs').textContent = pAbs;
+    tr.querySelector('.p2Abs').textContent = p2Abs;
+    tr.querySelector('.pf').textContent = pf;
+    tr.querySelector('.psi').textContent = psi;
+    tr.querySelector('.perdAbs').textContent = (perdAbs * 100).toFixed(2) + '%';
+    tr.querySelector('.perdMan').textContent = (perdMan * 100).toFixed(2) + '%';
+    tr.querySelector('.estadoPerd').textContent = estadoPerd;
+    tr.querySelector('.velocidad').textContent = velocidad;
+    tr.querySelector('.estadoVel').textContent = estadoVel;
+    
+    tr.querySelector('.estadoPerd').className = 'row-calc estadoPerd ' + (estadoPerd === 'APROBADO' ? 'status-aprobado' : 'status-rechazado');
+    tr.querySelector('.estadoVel').className = 'row-calc estadoVel ' + (estadoVel === 'APROBADO' ? 'status-aprobado' : 'status-rechazado');
+    
+    // Recalcular siguiente
+    const nextRow = document.querySelectorAll('#tablaMedia tr')[rowIndex + 1];
+    if (nextRow) calculateRowMedia(nextRow, rowIndex + 1);
+}
+
+// ==================== EXPORTAR PDF ====================
+function exportBAJAPDF() {
+    Swal.fire({title: 'Generando PDF...', didOpen: () => Swal.showLoading()});
+    setTimeout(() => {
+        try {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('l', 'mm', 'letter');
+            const w = doc.internal.pageSize.getWidth();
+            const h = doc.internal.pageSize.getHeight();
+            const margin = 12;
+
+            // Header corporativo sin banner azul (solo línea dorada)
+            doc.setFillColor(255, 183, 3);
+            doc.rect(0, 0, w, 2, 'F');
+            try { doc.addImage('img/Logo 2025.png', 'PNG', margin, 6, 24, 24); } catch (e) {}
+            doc.setTextColor(0, 0, 0);
+            doc.setFontSize(16);
+            doc.setFont('helvetica', 'bold');
+            doc.text('TODO GAS SYR S.A.S', w / 2, 13, { align: 'center' });
+            doc.setTextColor(80, 80, 80);
+            doc.setFontSize(10);
+            doc.text('Cálculos de Redes de Gas Natural - BAJA PRESIÓN', w / 2, 21, { align: 'center' });
+
+            // Caja de cliente estilo tabla a la derecha
+            const c1 = document.getElementById('bajaClientName')?.value || 'N/A';
+            const c2 = document.getElementById('bajaCedula')?.value || 'N/A';
+            const c3 = document.getElementById('bajaDireccion')?.value || 'N/A';
+            const c4 = document.getElementById('bajaTelefono')?.value || 'N/A';
+            const clientWidth = 95;
+            doc.autoTable({
+                startY: 8,
+                margin: { left: w - margin - clientWidth },
+                tableWidth: clientWidth,
+                body: [
+                    ['NOMBRE:', c1],
+                    ['CÉDULA:', c2],
+                    ['DIRECCIÓN:', c3],
+                    ['TELÉFONO:', c4]
+                ],
+                theme: 'grid',
+                styles: { fontSize: 8, cellPadding: 2, lineColor: [0,0,0], lineWidth: 0.3 },
+                columnStyles: { 0: { fontStyle: 'bold', cellWidth: 35 }, 1: { cellWidth: clientWidth - 35 } },
+                headStyles: { fillColor: [255,255,255], textColor: [0,0,0] },
+                bodyStyles: { fillColor: [255,255,255] }
+            });
+
+            // Tabla BAJA - DECLARAR rows ANTES del forEach
+            const rows = [];
+            document.querySelectorAll('#tablaBAJA tr').forEach(tr => {
+                rows.push([
+                    tr.querySelector('.inicio')?.value || '',
+                    tr.querySelector('.fin')?.value || '',
+                    tr.querySelector('.caudal')?.value || '',
+                    tr.querySelector('.longitud')?.value || '',
+                    tr.querySelector('.le')?.textContent || '',
+                    tr.querySelector('.diametro')?.value || '',
+                    tr.querySelector('.pi')?.value || '',
+                    tr.querySelector('.perdida')?.textContent || '',
+                    tr.querySelector('.pf')?.textContent || '',
+                    tr.querySelector('.velocidad')?.textContent || '',
+                    tr.querySelector('.material')?.value || '',
+                    tr.querySelector('.estado')?.textContent || ''
+                ]);
+            });
+
+            doc.autoTable({
+                startY: 38,
+                margin: { left: margin, right: margin },
+                head: [
+                    ['Inicio', 'Fin', 'Caudal', 'Longitud', 'Long. Equiv', 'Diámetro', 'Pi', 'Pérdida', 'Pf', 'Velocidad', 'Material', 'Estado'],
+                    ['', '', 'm³/h', 'm', 'm', 'mm', 'mbar', 'mbar', 'mbar', 'm/s', '', '']
+                ],
+                body: rows,
+                theme: 'grid',
+                styles: { fontSize: 8, cellPadding: 2, lineColor: [0,0,0], lineWidth: 0.3 },
+                headStyles: { fillColor: [255,255,255], textColor: [0,0,0], fontStyle: 'bold' },
+                bodyStyles: { fillColor: [255,255,255] }
+            });
+
+            const tableFinalY = doc.lastAutoTable?.finalY || 38;
+
+            // Firma/Certificación
+            const signW = 70, signH = 28;
+            const signX = (w - signW) / 2;
+            const signY = tableFinalY + 10;
+            doc.setDrawColor(0,0,0);
+            doc.setLineWidth(0.4);
+            doc.rect(signX, signY, signW, signH);
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(9);
+            doc.setTextColor(0,0,0);
+            doc.text('Polidoro Saavedra R', w/2, signY + 10, { align: 'center' });
+            doc.setFontSize(8);
+            doc.text('Diseño Polidoro Saavedra', w/2, signY + 15, { align: 'center' });
+            doc.text('C.C. 4.121.669', w/2, signY + 20, { align: 'center' });
+            doc.text('Registro SENA 1300196', w/2, signY + 25, { align: 'center' });
+
+            // Metadatos
+            doc.setProperties({
+                title: `BAJA PRESIÓN - ${c1}`,
+                author: 'TODO GAS SYR S.A.S',
+                subject: 'Cálculos de Redes de Gas Natural'
+            });
+
+            // Footer con contacto
+            const fecha = new Date().toLocaleDateString('es-ES');
+            const pages = doc.internal.getNumberOfPages();
+            for (let i = 1; i <= pages; i++) {
+                doc.setPage(i);
+                doc.setDrawColor(220, 220, 220);
+                doc.line(margin, h - 12, w - margin, h - 12);
+                doc.setFontSize(7);
+                doc.setTextColor(120, 120, 120);
+                doc.text('TODO GAS SYR S.A.S | NIT: 901.126.243-3 | Colombia | Tel: 3223618360 - 3209485534', w / 2, h - 8, { align: 'center' });
+                doc.text(`Fecha: ${fecha} | Página ${i} de ${pages}`, w / 2, h - 4, { align: 'center' });
+            }
+
+            const bajaName = (document.getElementById('bajaClientName')?.value || 'CLIENTE').trim();
+            const bajaSafe = bajaName.replace(/[^\w\s-]+/g, '').replace(/\s+/g, '_') || 'CLIENTE';
+            doc.save(`BAJA_PRESION-${bajaSafe}.pdf`);
+            Swal.close();
+            Swal.fire('¡Listo!', 'PDF generado exitosamente', 'success');
+        } catch (e) {
+            Swal.close();
+            Swal.fire('Error', e.message, 'error');
+        }
+    }, 400);
+}
+
+function exportMediaPDF() {
+    // Modal de opciones de exportación
+    Swal.fire({
+        title: 'Opciones de exportación',
+        html: `
+            <div style="text-align:left;">
+                <label style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+                    <input type="checkbox" id="optSignatureM" checked /> Incluir firma/sello
+                </label>
+                <label style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+                    <input type="checkbox" id="optSummaryM" checked /> Incluir resumen técnico
+                </label>
+            </div>
+        `,
+        showCancelButton: true,
+        confirmButtonText: 'Exportar',
+        cancelButtonText: 'Cancelar',
+        preConfirm: () => {
+            const includeSignature = document.getElementById('optSignatureM')?.checked;
+            const includeSummary = document.getElementById('optSummaryM')?.checked;
+            return { includeSignature, includeSummary };
+        }
+    }).then(res => {
+        if (!res.isConfirmed) return;
+        const { includeSignature, includeSummary } = res.value || { includeSignature: true, includeSummary: true };
+        Swal.fire({title: 'Generando PDF...', didOpen: () => Swal.showLoading()});
+        setTimeout(() => {
+            try {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('l', 'mm', 'letter'); // Horizontal carta
+            const w = doc.internal.pageSize.getWidth();
+            const h = doc.internal.pageSize.getHeight();
+            const margin = 12;
+
+            // Header corporativo sin banner azul (solo línea dorada)
+            doc.setFillColor(255, 183, 3);
+            doc.rect(0, 0, w, 2, 'F');
+            try { doc.addImage('img/Logo 2025.png', 'PNG', margin, 6, 24, 24); } catch (e) {}
+            doc.setTextColor(0, 0, 0);
+            doc.setFontSize(16);
+            doc.setFont('helvetica', 'bold');
+            doc.text('TODO GAS SYR S.A.S', w / 2, 13, { align: 'center' });
+            doc.setTextColor(80, 80, 80);
+            doc.setFontSize(10);
+            doc.text('Cálculos de Redes de Gas Natural - MEDIA PRESIÓN', w / 2, 21, { align: 'center' });
+
+            let y = 28;
+
+            // Caja de cliente estilo tabla a la derecha
+            const c1 = document.getElementById('mediaClientName')?.value || 'N/A';
+            const c2 = document.getElementById('mediaCedula')?.value || 'N/A';
+            const c3 = document.getElementById('mediaDireccion')?.value || 'N/A';
+            const c4 = document.getElementById('mediaTelefono')?.value || 'N/A';
+            const clientWidth = 95;
+            doc.autoTable({
+                startY: 8,
+                margin: { left: w - margin - clientWidth },
+                tableWidth: clientWidth,
+                body: [
+                    ['NOMBRE:', c1],
+                    ['CÉDULA:', c2],
+                    ['DIRECCIÓN:', c3],
+                    ['TELÉFONO:', c4]
+                ],
+                theme: 'grid',
+                styles: { fontSize: 8, cellPadding: 2, lineColor: [0,0,0], lineWidth: 0.3 },
+                columnStyles: { 0: { fontStyle: 'bold', cellWidth: 35 }, 1: { cellWidth: clientWidth - 35 } },
+                headStyles: { fillColor: [255,255,255], textColor: [0,0,0] },
+                bodyStyles: { fillColor: [255,255,255] }
+            });
+            y = 34;
+
+            // Tabla MEDIA
+            const rows = [];
+            document.querySelectorAll('#tablaMedia tr').forEach(tr => {
+                rows.push([
+                    tr.querySelector('.inicio')?.value || '',
+                    tr.querySelector('.fin')?.value || '',
+                    tr.querySelector('.caudal')?.value || '',
+                    tr.querySelector('.diamNom')?.value || '',
+                    tr.querySelector('.diamInt')?.value || '',
+                    tr.querySelector('.longitud')?.value || '',
+                    tr.querySelector('.le')?.textContent || '',
+                    tr.querySelector('.lt')?.textContent || '',
+                    tr.querySelector('.p1')?.value || '',
+                    tr.querySelector('.pAbs')?.textContent || '',
+                    tr.querySelector('.p2Abs')?.textContent || '',
+                    tr.querySelector('.pf')?.textContent || '',
+                    tr.querySelector('.psi')?.textContent || '',
+                    tr.querySelector('.perdAbs')?.textContent || '',
+                    tr.querySelector('.perdMan')?.textContent || '',
+                    tr.querySelector('.estadoPerd')?.textContent || '',
+                    tr.querySelector('.velocidad')?.textContent || '',
+                    tr.querySelector('.estadoVel')?.textContent || ''
+                ]);
+            });
+
+            doc.autoTable({
+                startY: 38,
+                margin: { left: margin, right: margin },
+                head: [
+                    ['Inicio', 'Fin', 'Caudal', 'Ø Nom', 'Ø Int', 'Long.', 'L.Equiv', 'L.Total', 'P1', 'P abs', 'P2 abs', 'P2', 'PSI', 'Pérd %Abs', 'Pérd %Man', 'Est Pres', 'Vel', 'Est Vel'],
+                    ['', '', 'm³/h', '', 'mm', 'm', 'm', 'm', 'mbar', 'mbar', 'mbar', 'mbar', 'psi', '', '', '', 'm/s', '']
+                ],
+                body: rows,
+                theme: 'grid',
+                styles: { fontSize: 7, cellPadding: 1.5, lineColor: [0,0,0], lineWidth: 0.3 },
+                headStyles: { fillColor: [255,255,255], textColor: [0, 0, 0], fontStyle: 'bold', fontSize: 7 },
+                bodyStyles: { fontSize: 7, fillColor: [255,255,255] },
+                columnStyles: {
+                    15: {
+                        fontStyle: 'bold',
+                        fillColor: (row) => {
+                            const v = rows[row.index]?.[15] || '';
+                            return v === 'APROBADO' ? [0, 168, 107] : v === 'NO APROBADO' ? [220, 53, 69] : [255, 255, 255];
+                        },
+                        textColor: (row) => {
+                            const v = rows[row.index]?.[15] || '';
+                            return v === 'APROBADO' || v === 'NO APROBADO' ? [255, 255, 255] : [0, 0, 0];
+                        }
+                    },
+                    17: {
+                        fontStyle: 'bold',
+                        fillColor: (row) => {
+                            const v = rows[row.index]?.[17] || '';
+                            return v === 'APROBADO' ? [0, 168, 107] : v === 'NO APROBADO' ? [220, 53, 69] : [255, 255, 255];
+                        },
+                        textColor: (row) => {
+                            const v = rows[row.index]?.[17] || '';
+                            return v === 'APROBADO' || v === 'NO APROBADO' ? [255, 255, 255] : [0, 0, 0];
+                        }
+                    }
+                }
+            });
+
+            const tableFinalY = doc.lastAutoTable?.finalY || 38;
+
+            // Resumen técnico opcional
+            if (includeSummary) {
+                const total = rows.length;
+                const presAprob = rows.filter(r => (r[15] || '').toUpperCase() === 'APROBADO').length;
+                const velAprob = rows.filter(r => (r[17] || '').toUpperCase() === 'APROBADO').length;
+                const resumenY = tableFinalY + 6;
+                doc.autoTable({
+                    startY: resumenY,
+                    margin: { left: margin, right: margin },
+                    head: [['Resumen técnico']],
+                    body: [
+                        [`Tramos: ${total} | Presión aprobada: ${presAprob} | Velocidad aprobada: ${velAprob}`],
+                        ['Criterios: Pérdida < 10% | Velocidad < 20 m/s']
+                    ],
+                    theme: 'grid',
+                    styles: { fontSize: 8 },
+                    headStyles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' }
+                });
+            }
+
+            // Firma/Certificación opcional
+            if (includeSignature) {
+                const finalY = doc.lastAutoTable?.finalY || tableFinalY;
+                const signW = 70, signH = 28;
+                const signX = (w - signW) / 2;
+                const signY = finalY + 10;
+                doc.setDrawColor(0,0,0);
+                doc.setLineWidth(0.4);
+                doc.rect(signX, signY, signW, signH);
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(9);
+                doc.text('Polidoro Saavedra R', w/2, signY + 10, { align: 'center' });
+                doc.setFontSize(8);
+                doc.text('Diseño Polidoro Saavedra', w/2, signY + 15, { align: 'center' });
+                doc.text('C.C. 4.121.669', w/2, signY + 20, { align: 'center' });
+                doc.text('Registro SENA 1300196', w/2, signY + 25, { align: 'center' });
+            }
+
+            // Metadatos
+            doc.setProperties({
+                title: `MEDIA PRESIÓN - ${c1}`,
+                author: 'TODO GAS SYR S.A.S',
+                subject: 'Cálculos de Redes de Gas Natural'
+            });
+
+            // Footer con contacto
+            const fecha = new Date().toLocaleDateString('es-ES');
+            const pages = doc.internal.getNumberOfPages();
+            for (let i = 1; i <= pages; i++) {
+                doc.setPage(i);
+                doc.setDrawColor(220, 220, 220);
+                doc.line(margin, h - 12, w - margin, h - 12);
+                doc.setFontSize(7);
+                doc.setTextColor(120, 120, 120);
+                doc.text('TODO GAS SYR S.A.S | NIT: 901.126.243-3 | Colombia | Tel: 3223618360 - 3209485534', w / 2, h - 8, { align: 'center' });
+                doc.text(`Fecha: ${fecha} | Página ${i} de ${pages}`, w / 2, h - 4, { align: 'center' });
+            }
+
+            const mediaName = (document.getElementById('mediaClientName')?.value || 'CLIENTE').trim();
+            const mediaSafe = mediaName.replace(/[^\w\s-]+/g, '').replace(/\s+/g, '_') || 'CLIENTE';
+            doc.save(`MEDIA_PRESION-${mediaSafe}.pdf`);
+            Swal.close();
+            Swal.fire('¡Listo!', 'PDF generado exitosamente', 'success');
+        } catch (e) {
+            Swal.close();
+            Swal.fire('Error', e.message, 'error');
+        }
+    }, 400);
+    });
+}
+
+// ==================== INICIALIZACIÓN ====================
+window.addEventListener('load', () => {
+    addRowBAJA();
+    addRowMedia();
+    
+    // Cargar datos cliente desde localStorage
+    ['bajaClientName','bajaCedula','bajaDireccion','bajaMunicipio','bajaTelefono'].forEach(id => {
+        const v = localStorage.getItem(id);
+        if (v) { const el = document.getElementById(id); if (el) el.value = v; }
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('input', () => localStorage.setItem(id, el.value || ''));
+    });
+    ['mediaClientName','mediaCedula','mediaDireccion','mediaTelefono'].forEach(id => {
+        const v = localStorage.getItem(id);
+        if (v) { const el = document.getElementById(id); if (el) el.value = v; }
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('input', () => localStorage.setItem(id, el.value || ''));
+    });
+
+    Swal.fire({
+        title: '¡Bienvenido!',
+        html: '<p><strong>TODO GAS SYR S.A.S</strong></p><p>Sistema de Cálculos de Gas Natural</p><p><i class="fas fa-fire-flame-curved" style="color: #ffb703; font-size: 2rem;"></i></p>',
+        icon: 'success',
+        timer: 2000,
+        showConfirmButton: false
+    });
+});
+</script>
+
+</body>
+</html>
