@@ -551,30 +551,35 @@ function calculateRowMedia(tr, rowIndex) {
 }
 
 // ==================== UTILIDAD: CONVERTIR IMAGEN A BASE64 ====================
-function getImageBase64(src) {
-    return new Promise((resolve, reject) => {
-        const img = new Image();
-        img.onload = function() {
-            try {
-                const canvas = document.createElement('canvas');
-                canvas.width = img.width;
-                canvas.height = img.height;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0);
-                const base64 = canvas.toDataURL('image/png');
-                console.log('✅ Imagen cargada:', src, 'Base64 length:', base64.length);
+async function getImageBase64(src) {
+    try {
+        // Convertir ruta relativa a absoluta si es necesario
+        const absolutePath = src.startsWith('http') ? src : `${window.location.origin}${window.location.pathname.replace('index.html', '')}${src}`;
+        
+        console.log('📥 Cargando imagen desde:', absolutePath);
+        
+        const response = await fetch(absolutePath);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        
+        const blob = await response.blob();
+        const reader = new FileReader();
+        
+        return new Promise((resolve, reject) => {
+            reader.onload = () => {
+                const base64 = reader.result;
+                console.log('✅ Imagen cargada correctamente:', src, 'Size:', base64.length);
                 resolve(base64);
-            } catch (err) {
-                console.error('❌ Error en canvas:', err);
-                reject(err);
-            }
-        };
-        img.onerror = (err) => {
-            console.error('❌ Error cargando imagen:', src, err);
-            reject(err);
-        };
-        img.src = src;
-    });
+            };
+            reader.onerror = () => {
+                console.error('❌ Error leyendo blob:', src);
+                reject(new Error('Error leyendo blob'));
+            };
+            reader.readAsDataURL(blob);
+        });
+    } catch (err) {
+        console.error('❌ Error cargando imagen:', src, err);
+        throw err;
+    }
 }
 
 // ==================== EXPORTAR PDF ====================
