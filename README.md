@@ -560,7 +560,7 @@ Desarrollado con atención al detalle y enfoque en excelencia ingenieril para TO
 
 **Última actualización:** Enero 2026
 
-🌐 [GitHub Repository](https://github.com/LuisSilvestre95/TodoGas)
+🌐 [GitHub Repository](https://github.com/LuisSilvestre95/Sistema-Calculos-TodoGas) | 🌍 [Ver en vivo](https://luissilvestre95.github.io/Sistema-Calculos-TodoGas/)
 
 **Hecho con ❤️ para profesionales del gas**
 
