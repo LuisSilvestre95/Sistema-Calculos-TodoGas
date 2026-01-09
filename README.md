@@ -1,289 +1,567 @@
-# TODO GAS SYR S.A.S - Sistema Profesional de Cálculo de Redes de Gas
+# 🌟 TODO GAS SYR S.A.S
 
-## 📋 Descripción
+## 📊 Sistema Profesional de Cálculo de Redes de Gas Natural y GLP
 
-Sistema profesional desarrollado para TODO GAS SYR S.A.S que permite calcular y diseñar redes de gas natural y GLP de manera precisa y eficiente. La aplicación incluye cálculos avanzados de pérdida de presión, validación de tramos y generación de reportes PDF profesionales.
+<div align="center">
 
-## 🗂️ Estructura del Proyecto
+![Estado](https://img.shields.io/badge/Estado-Producción-brightgreen?style=for-the-badge)
+![Versión](https://img.shields.io/badge/Versión-2.2.0-blue?style=for-the-badge)
+![Licencia](https://img.shields.io/badge/Licencia-Propietaria-red?style=for-the-badge)
+
+**Solución integral para el diseño, cálculo y optimización de redes de distribución de gas**
+
+</div>
+
+---
+
+## 🎯 Descripción General
+
+**TODO GAS SYR S.A.S** ofrece una plataforma web profesional y completa para calcular, diseñar y validar redes de gas natural (GN) y GLP con precisión ingenieril. La aplicación integra algoritmos avanzados de termodinámica, análisis de presión y validación de parámetros según normas técnicas internacionales.
+
+**Ideal para:**
+- ✅ Ingenieros de diseño de redes de gas
+- ✅ Proyectistas de instalaciones de gas
+- ✅ Distribuidoras de gas natural
+- ✅ Distribuidoras de GLP
+- ✅ Consultores energéticos
+- ✅ Entidades de control y supervisión
+
+---
+
+## 🚀 Características Principales
+
+### 🔧 **Funcionalidades Núcleo**
+
+| Característica | Descripción |
+|---|---|
+| 📋 **Gestión de Clientes** | Registro completo con validación de datos y almacenamiento persistente |
+| 🧮 **Cálculos Avanzados** | Pérdida de presión, velocidad del gas, análisis termodinámico |
+| 🌐 **Análisis de Red** | Validación de conectividad, detección de ciclos, topología de nodos |
+| ✔️ **Validación Inteligente** | Verificación de velocidades, presiones, diámetros y coeficientes |
+| 📄 **Reportes PDF** | Exportación profesional con gráficos, tablas y análisis detallado |
+| 💾 **Almacenamiento Local** | Datos persistentes sin necesidad de servidor |
+
+### 📱 **Interfaz de Usuario**
+
+- 🎨 Diseño responsivo y moderno
+- ⌨️ Navegación intuitiva por pestañas
+- 📊 Tablas interactivas con edición en vivo
+- ⚡ Alertas dinámicas y validación en tiempo real
+- 🎯 Modal de confirmación para operaciones críticas
+- ♿ Accesibilidad mejorada y navegación por teclado
+
+---
+
+## 📂 Estructura del Proyecto
 
 ```
 sitio-todogas2/
-├── index-clean.html              # Archivo HTML principal (VERSIÓN SEPARADA)
-├── assets/
-│   ├── css/
-│   │   └── styles.css            # Estilos CSS completos
-│   ├── js/
+│
+├── 📄 index.html                 # Aplicación web principal (1100 líneas)
+├── 📄 index.html.backup          # Respaldo de versión anterior
+├── 📋 README.md                  # Documentación completa
+│
+├── 📁 assets/
+│   ├── 🎨 css/
+│   │   └── styles.css            # Estilos CSS completos y optimizados
+│   │
+│   ├── ⚙️ js/                    # Módulos JavaScript modularizados
 │   │   ├── config.js             # Configuración del sistema
 │   │   ├── utils.js              # Funciones de utilidad
-│   │   ├── calculation.js        # Funciones de cálculo
+│   │   ├── calculation.js        # Motor de cálculos termodinámicos
 │   │   ├── client.js             # Gestión de datos del cliente
-│   │   ├── segments.js           # Gestión de tramos
-│   │   ├── visualization.js      # Visualización y gráficos
+│   │   ├── segments.js           # Gestión y análisis de tramos
+│   │   ├── visualization.js      # Gráficos y visualización
 │   │   ├── export.js             # Exportación a PDF
-│   │   └── init.js               # Inicialización
-│   ├── favicon/
-│   │   └── site.webmanifest      # Manifiesto PWA
-│   └── images/
-│       └── Logo 2025.png         # Logo de la empresa
-└── README.md                     # Este archivo
-
+│   │   ├── cities.js             # Base de datos de ciudades colombianas
+│   │   └── init.js               # Inicialización de la aplicación
+│   │
+│   ├── 🌐 favicon/
+│   │   └── site.webmanifest      # Configuración PWA
+│   │
+│   └── 🖼️ images/
+│       ├── Logo 2025.png         # Logo empresarial
+│       └── firma.png             # Firma profesional
+│
+└── .git/                         # Control de versiones Git
 ```
 
-## ✨ Características
+---
 
-### 1. Gestión de Clientes
-- Registro completo de información del cliente
-- Validación de datos de entrada
-- Almacenamiento local (localStorage)
-- Resumen automático de datos
+## 🛠️ Requisitos del Sistema
 
-### 2. Cálculo de Redes de Gas
-- Cálculo de pérdida de presión según material del tubo
-- Cálculo de velocidad del gas
-- Validación de diámetros estándar
-- Soporte para Gas Natural (GN) y GLP
-- Cálculo de longitud equivalente
-- Validación de presiones iniciales
+| Requisito | Especificación |
+|---|---|
+| 🌐 **Navegador** | Chrome 90+, Firefox 88+, Safari 14+, Edge 90+ |
+| 💾 **Almacenamiento** | localStorage habilitado (mín. 5MB) |
+| 🔌 **Conexión** | Internet para librerías CDN (jsPDF, AutoTable, SweetAlert2) |
+| 📊 **Resolución** | Mín. 1024×768px (responsive) |
 
-### 3. Análisis de Conectividad
-- Validación de nodos conectados
-- Detección de ciclos en la red
-- Clasificación topológica
-- Cálculo de presiones en cada nodo
+---
 
-### 4. Validación de Tramos
-- Verificación de velocidades máximas
-- Validación de pérdidas de presión
-- Control de diámetros estándar
-- Relación L/D mínima
-- Sugerencias de diámetro mínimo
+## 📖 Guía de Uso
 
-### 5. Generación de Reportes
-- Exportación a PDF profesional
-- Incluye datos del cliente
-- Tabla detallada de tramos
-- Gráficos de presión y velocidad
-- Diagrama de red
+### 🎬 Inicio Rápido
 
-### 6. Interfaz de Usuario
-- Diseño responsivo y moderno
-- Navegación por pestañas
-- Tablas interactivas con edición
-- Alertas dinámicas
-- Modal de confirmación
-- Navegación por teclado mejorada
+#### **Paso 1️⃣: Abrir la Aplicación**
+```
+Abra index.html en su navegador web
+```
 
-## 🚀 Cómo Usar
+#### **Paso 2️⃣: Registro de Cliente** (Pestaña 1)
+Complete los siguientes campos:
 
-### Requisitos
-- Navegador moderno (Chrome, Firefox, Safari, Edge)
-- Conexión a internet (para librerías CDN)
-- Acceso a localStorage
+| Campo | Descripción | Ejemplo |
+|---|---|---|
+| 📑 Tipo de Identificación | CC, NIT, Pasaporte, etc. | CC |
+| 🔢 Número | Documento sin puntos ni guiones | 1012427712 |
+| 👤 Nombre/Razón Social | Nombre completo o empresa | ABC Distribuidora |
+| 📞 Teléfono de Contacto | Número de contacto | 3015949331 |
+| 🏠 Dirección | Ubicación completa | Calle 28 #18-38 |
+| 🌍 Municipio/Departamento | Ciudad y región | Tunja, Boyacá |
+| 🏢 Tipo de Proyecto | Red nueva, ampliación, etc. | Red nueva |
+| ⛽ Tipo de Gas | Gas Natural (GN) o GLP | Gas Natural |
+| 📈 Nivel de Presión | Baja o Media Presión | Baja Presión |
 
-### Pasos Básicos
+#### **Paso 3️⃣: Guardar Datos**
+```
+Haga click en "💾 Guardar Datos"
+→ Se mostrará resumen automático
+→ Se habilita la pestaña de cálculos
+```
 
-1. **Abrir la aplicación**
-   - Abra el archivo `index-clean.html` en un navegador web
+#### **Paso 4️⃣: Ingreso de Tramos** (Pestaña 2)
 
-2. **Llenar Datos del Cliente** (Pestaña 1)
-   - Tipo de identificación
-   - Número de identificación
-   - Nombre/Razón social
-   - Contacto (teléfono, dirección)
-   - Ubicación (municipio, departamento)
-   - Tipo de proyecto
-   - Tipo de gas (GN o GLP)
-   - Nivel de presión (baja o media)
+Agregue cada tramo de la red con estos parámetros:
 
-3. **Guardar Datos**
-   - Click en "Guardar Datos"
-   - Se mostrará un resumen automático
+| Parámetro | Unidad | Rango | Descripción |
+|---|---|---|---|
+| 🔗 **Nodo Inicial** | - | - | Punto de partida (ej: A, 1, N1) |
+| 🔗 **Nodo Final** | - | - | Punto de destino (ej: B, 2, N2) |
+| 📊 **Caudal (Q)** | m³/h | > 0 | Flujo volumétrico de gas |
+| 📏 **Longitud (L)** | m | > 0.3 | Extensión del tubo |
+| 🔌 **Diámetro (D)** | mm | 12, 16, 20, 25, 32, 40, 50 | Valores estándar |
+| 🔵 **Presión Inicial (P₁)** | mbar | 0-5000 | Presión al inicio |
+| 🧱 **Material** | - | PE AL PE, Cobre, Acero | Composición del tubo |
 
-4. **Ir a Cálculos** (Pestaña 2)
-   - Se abre automáticamente o click en la pestaña
+**Materiales y Factores:**
+```
+• PE AL PE (Polietileno Aluminio): Factor LE = 1.2
+• Cobre:          Factor LE = 1.15
+• Acero:          Factor LE = 1.25
+```
 
-5. **Agregar Tramos**
-   - Ingrese los parámetros de cada tramo:
-     - Nodos de inicio y fin
-     - Caudal (m³/h)
-     - Longitud (m)
-     - Diámetro (mm) - valores estándar: 12, 16, 20, 25, 32, 40, 50
-     - Presión inicial (mbar)
-     - Material (PE AL PE, Cobre, Acero)
-   - Click en "Agregar Tramo"
+#### **Paso 5️⃣: Cálculo de la Red**
+```
+Haga click en "🧮 Calcular Red"
+→ Sistema valida conectividad
+→ Calcula presiones en cada nodo
+→ Genera gráficos y resultados
+```
 
-6. **Calcular Red**
-   - Click en "Calcular Red"
-   - Se mostrarán resultados en tabla y gráfico
+#### **Paso 6️⃣: Revisar Resultados**
+```
+✅ Tabla dinámica con todos los parámetros
+✅ Gráficos de presión y velocidad
+✅ Indicadores de validación por tramo
+✅ Sugerencias de optimización
+```
 
-7. **Editar/Eliminar Tramos**
-   - Click en el botón de edición para modificar
-   - Click en el botón de eliminar para remover
+#### **Paso 7️⃣: Editar/Eliminar Tramos**
+```
+📝 Click en el botón de edición para modificar
+🗑️ Click en eliminar para remover
+↻ Recalcular automáticamente
+```
 
-8. **Exportar Informe**
-   - Click en "Exportar a PDF"
-   - Se descargará un informe completo en PDF
+#### **Paso 8️⃣: Exportar Informe PDF**
+```
+Haga click en "📄 Exportar a PDF"
+→ Se descarga informe completo con:
+   • Logo y datos del cliente
+   • Tabla detallada de cálculos
+   • Gráficos profesionales
+   • Firma de ingeniería
+```
 
-## 📊 Parámetros de Validación
+---
 
-### Redes de Baja Presión (Gas Natural)
-- Presión máxima inicial: 30 mbar
-- Velocidad máxima: 6 m/s
-- Pérdida máxima: 10% de presión inicial
-- Longitud mínima del tramo: 0.3 m
-- Relación L/D mínima: 10
+## ⚙️ Parámetros de Validación
 
-### Redes de Baja Presión (GLP)
-- Presión máxima inicial: 30 mbar
-- Velocidad máxima: 5 m/s
-- Pérdida máxima: 8% de presión inicial
-- Longitud mínima del tramo: 0.5 m
-- Relación L/D mínima: 10
+### 🔴 **Redes de Baja Presión - Gas Natural**
 
-### Redes de Media Presión (Gas Natural)
-- Rango de presión: 100-5000 mbar
-- Velocidad máxima: 10 m/s
-- Pérdida máxima: 20% de presión inicial
-- Longitud mínima del tramo: 0.5 m
-- Relación L/D mínima: 10
+| Parámetro | Límite | Criterio |
+|---|---|---|
+| 🔵 Presión Inicial Máxima | 30 mbar | Regulación normativa |
+| ⚡ Velocidad Máxima | 6 m/s | Seguridad y ruido |
+| 📉 Pérdida Máxima | 10% P₁ | Caída de presión permitida |
+| 📏 Longitud Mínima | 0.3 m | Resolución mínima |
+| 📊 Relación L/D Mínima | 10 | Ratio de longitud/diámetro |
 
-### Redes de Media Presión (GLP)
-- Rango de presión: 100-5000 mbar
-- Velocidad máxima: 8 m/s
-- Pérdida máxima: 15% de presión inicial
-- Longitud mínima del tramo: 0.8 m
-- Relación L/D mínima: 10
+### 🟠 **Redes de Baja Presión - GLP**
 
-## 🔧 Características Técnicas
+| Parámetro | Límite | Criterio |
+|---|---|---|
+| 🔵 Presión Inicial Máxima | 30 mbar | Mayor densidad que GN |
+| ⚡ Velocidad Máxima | 5 m/s | GLP requiere velocidad menor |
+| 📉 Pérdida Máxima | 8% P₁ | Más restrictivo que GN |
+| 📏 Longitud Mínima | 0.5 m | Mayor que GN |
+| 📊 Relación L/D Mínima | 10 | Misma que GN |
 
-### Almacenamiento
-- Datos guardados localmente en localStorage
-- Persisten entre sesiones
-- Pueden limpiarse con el botón "Limpiar Todo"
+### 🟡 **Redes de Media Presión - Gas Natural**
 
-### Cálculos Realizados
-1. **Longitud Equivalente (LE)**
-   - LE = Longitud × Factor Material
-   - Factores: PE AL PE (1.2), Cobre (1.15), Acero (1.25)
+| Parámetro | Límite | Criterio |
+|---|---|---|
+| 🔵 Rango de Presión | 100-5000 mbar | Presiones intermedias |
+| ⚡ Velocidad Máxima | 10 m/s | Mayor que baja presión |
+| 📉 Pérdida Máxima | 20% P₁ | Mayor tolerancia |
+| 📏 Longitud Mínima | 0.5 m | Distancias mayores |
+| 📊 Relación L/D Mínima | 10 | Estándar industrial |
 
-2. **Pérdida de Presión (ΔP)**
-   - Fórmula de Coolebrook-White adaptada
-   - Dependiente del gas tipo, caudal, diámetro
+### 🟢 **Redes de Media Presión - GLP**
 
-3. **Velocidad del Gas**
-   - Cálculo termodinámico
-   - Considerando presión y temperatura
+| Parámetro | Límite | Criterio |
+|---|---|---|
+| 🔵 Rango de Presión | 100-5000 mbar | Rango operacional |
+| ⚡ Velocidad Máxima | 8 m/s | Conservador para GLP |
+| 📉 Pérdida Máxima | 15% P₁ | Balance seguridad-eficiencia |
+| 📏 Longitud Mínima | 0.8 m | Mayor que GN |
+| 📊 Relación L/D Mínima | 10 | Estándar industrial |
 
-4. **Validación de Tramos**
-   - Verificación multicriterio
-   - Sugerencias automáticas
+---
 
-## 🎨 Personalización
+## 🧪 Motor de Cálculos
 
-### Modificar Colores
+### 📐 **Fórmulas Implementadas**
+
+#### 1️⃣ Longitud Equivalente (LE)
+```
+LE = L × Factor_Material
+
+Donde:
+  L = Longitud real del tramo (m)
+  Factor_Material = 1.2 (PE AL PE), 1.15 (Cobre), 1.25 (Acero)
+```
+
+#### 2️⃣ Pérdida de Presión (ΔP)
+```
+Fórmula de Colebrook-White adaptada para gas
+
+ΔP = f × (L/D) × (ρ × V²) / 2
+
+Donde:
+  f = Factor de fricción (dependiente del gas)
+  L = Longitud equivalente (m)
+  D = Diámetro interno (mm)
+  ρ = Densidad del gas (kg/m³)
+  V = Velocidad del fluido (m/s)
+```
+
+#### 3️⃣ Velocidad del Gas (V)
+```
+V = Q / A = (Q × 4) / (π × D²)
+
+Donde:
+  Q = Caudal (m³/h)
+  D = Diámetro (mm)
+  A = Área de sección transversal (mm²)
+```
+
+#### 4️⃣ Presión Final (P₂)
+```
+P₂ = P₁ - ΔP
+
+Donde:
+  P₁ = Presión inicial (mbar)
+  ΔP = Caída de presión calculada (mbar)
+  P₂ = Presión final (mbar)
+```
+
+### ✅ **Validación Multicriterio**
+
+```
+✓ Velocidad dentro de límites
+✓ Pérdida de presión dentro de límites
+✓ Diámetro en valores estándar
+✓ Presión final > 0 mbar
+✓ Caudal > 0 m³/h
+✓ Longitud > mínimo especificado
+✓ Relación L/D dentro de norma
+✓ Conectividad de nodos validada
+```
+
+---
+
+## 💾 Almacenamiento de Datos
+
+### 📍 Ubicación: localStorage del Navegador
+
+**Ventajas:**
+- ✅ No requiere servidor
+- ✅ Datos persistentes entre sesiones
+- ✅ Privacidad: datos en el dispositivo
+- ✅ Acceso instantáneo
+- ✅ Capacidad: ~5-10MB
+
+**Datos Guardados:**
+```
+• Información del cliente (nombre, contacto, ubicación)
+• Todos los tramos de red ingresados
+• Resultados de cálculos
+• Configuración de preferencias
+```
+
+**Limpiar Datos:**
+```
+Botón "🗑️ Limpiar Todo" → Elimina toda la información
+(Requiere confirmación)
+```
+
+---
+
+## 🎨 Personalización y Configuración
+
+### 🌈 **Modificar Colores**
+
 Edite `assets/css/styles.css`:
+
 ```css
 :root {
-    --primary-color: #2c3e50;      /* Azul principal */
-    --secondary-color: #3498db;    /* Azul secundario */
-    --success-color: #27ae60;      /* Verde */
-    --danger-color: #e74c3c;       /* Rojo */
-    /* ... más variables ... */
+    --primary-color: #2c3e50;        /* Azul principal */
+    --secondary-color: #3498db;      /* Azul secundario */
+    --accent-color: #FFB703;         /* Naranja/Oro */
+    --success-color: #27ae60;        /* Verde */
+    --danger-color: #e74c3c;         /* Rojo */
+    --warning-color: #f39c12;        /* Amarillo */
 }
 ```
 
-### Agregar Nuevos Materiales
+### ⚙️ **Agregar Nuevos Materiales**
+
 Edite `assets/js/config.js`:
+
 ```javascript
 materiales: {
     'PE AL PE': { rugosidad: 0.007, factorLE: 1.2 },
-    'Nuevo Material': { rugosidad: 0.xxx, factorLE: 1.x }
+    'Cobre': { rugosidad: 0.005, factorLE: 1.15 },
+    'Acero': { rugosidad: 0.010, factorLE: 1.25 },
+    'Tu Material': { rugosidad: 0.xxx, factorLE: 1.x }
 }
 ```
 
-### Modificar Límites
+### 🔧 **Modificar Límites de Validación**
+
 Edite `assets/js/config.js`:
+
 ```javascript
 limites: {
     baja: {
         presionMax: 30,
         velocidadMax: { GN: 6, GLP: 5 },
-        // ...
+        perdidaMax: { GN: 0.10, GLP: 0.08 }
+    },
+    media: {
+        presionMin: 100,
+        presionMax: 5000,
+        velocidadMax: { GN: 10, GLP: 8 }
     }
 }
 ```
 
-## 🐛 Resolución de Problemas
-
-### El logo no se muestra
-- Asegúrese que existe el archivo en `assets/images/Logo 2025.png`
-- Compruebe la ruta del archivo
-
-### Los datos no se guardan
-- Verifique que localStorage esté habilitado en el navegador
-- Compruebe el espacio disponible de almacenamiento
-
-### El PDF no se genera
-- Asegúrese que html2canvas se cargó correctamente
-- Intente con un navegador diferente
-
-### Errores en los cálculos
-- Verifique que los valores estén dentro de los rangos válidos
-- Confirme que el formato de los datos es correcto
-
-## 📝 Notas de Versión
-
-### Versión 2.2.0 - Separado (Actual)
-- ✅ HTML, CSS y JS completamente separados
-- ✅ Modularización del código
-- ✅ Mejor mantenibilidad
-- ✅ Rendimiento optimizado
-- ✅ Documentación completa
-
-### Versión 2.1.0 (Anterior)
-- HTML con estilos y scripts incrustados
-
-## 👨‍💻 Autor
-
-**Diseñado y Desarrollado por:** Luis Silvestre  
-**CC:** 1.012.427.712  
-**Correo:** luissilvestre70@gmail.com
-
-## 📋 Licencia
-
-© 2025 TODO GAS SYR S.A.S. Todos los derechos reservados.
-
-## 📞 Contacto
-
-**TODO GAS SYR S.A.S**
-- NIT: 901.126.243-3
-- Calle 28 N° 18-38, Tunja, Boyacá
-- Teléfono: +57-320-948-5534
+---
 
 ## 🔒 Seguridad
 
-- Sanitización de entrada de usuarios
-- Validación de datos en cliente y servidor
-- No se almacenan datos sensibles
-- Compatible con CSP (Content Security Policy)
-
-## 🚀 Mejoras Futuras
-
-- [ ] Backend para almacenamiento persistente
-- [ ] Autenticación de usuarios
-- [ ] Bases de datos de proyectos
-- [ ] Exportación a Excel
-- [ ] Modo offline mejorado
-- [ ] Soporte multiidioma
-- [ ] Integración con sistemas CAD
-- [ ] API REST para terceros
-
-## 🤝 Soporte
-
-Para soporte o reportar problemas, contacte a:
-- Email: luissilvestre70@gmail.com
-- WhatsApp: +57-320-948-5534
+| Aspecto | Implementación |
+|---|---|
+| 🛡️ **Validación de Entrada** | Sanitización de todos los campos |
+| 🔐 **Almacenamiento** | Datos locales, no transmitidos |
+| ⚔️ **CSP Compatible** | Content Security Policy normativo |
+| 🔒 **Privacidad** | Sin tracking, sin cookies de terceros |
+| ✅ **Integridad** | Validación de datos en múltiples capas |
 
 ---
 
+## 🐛 Resolución de Problemas
+
+### ❓ El logo no se muestra
+
+**Causa probable:** Ruta incorrecta del archivo
+
+**Solución:**
+```
+✓ Verificar que existe: assets/images/Logo 2025.png
+✓ Revisar permisos de lectura
+✓ Limpiar caché del navegador (Ctrl+Shift+Delete)
+```
+
+### ❓ Los datos no se guardan
+
+**Causa probable:** localStorage deshabilitado
+
+**Solución:**
+```
+✓ Verificar navegador: Privacidad → localStorage habilitado
+✓ Aumentar espacio de almacenamiento en navegador
+✓ Probar en navegador diferente
+```
+
+### ❓ El PDF no se genera
+
+**Causa probable:** Librerías CDN no cargadas
+
+**Solución:**
+```
+✓ Verificar conexión a internet
+✓ Revisar consola de errores (F12 → Console)
+✓ Probar en navegador diferente
+✓ Deshabilitar extensiones de navegador
+```
+
+### ❓ Los cálculos no coinciden
+
+**Causa probable:** Valores fuera de rango
+
+**Solución:**
+```
+✓ Revisar que todos los valores estén dentro de los límites
+✓ Verificar unidades (mbar, m, m³/h, mm)
+✓ Confirmar tipo de gas seleccionado
+✓ Validar nivel de presión
+```
+
+### ❓ La red no se calcula
+
+**Causa probable:** Nodos no conectados
+
+**Solución:**
+```
+✓ Verificar que los nodos formen red conectada
+✓ No deben existir nodos aislados
+✓ Revisar nombres de nodos (sin espacios, sin caracteres especiales)
+✓ Usar nomenclatura consistente (A, B, C o 1, 2, 3)
+```
+
+---
+
+## 📚 Documentación Técnica
+
+### 📋 Módulos JavaScript
+
+| Módulo | Función | Líneas |
+|---|---|---|
+| `config.js` | Configuración global, límites, materiales | ~150 |
+| `utils.js` | Funciones de utilidad comunes | ~200 |
+| `calculation.js` | Motor de cálculos termodinámicos | ~400 |
+| `client.js` | Gestión de datos del cliente | ~250 |
+| `segments.js` | Gestión y análisis de tramos | ~350 |
+| `visualization.js` | Gráficos y visualización con Chart.js | ~300 |
+| `export.js` | Exportación a PDF con jsPDF | ~400 |
+| `cities.js` | Base de datos de ciudades colombianas | ~600 |
+| `init.js` | Inicialización y event listeners | ~200 |
+
+### 📦 Dependencias Externas
+
+| Librería | Versión | Propósito |
+|---|---|---|
+| **jsPDF** | 2.5.1 | Generación de PDF |
+| **AutoTable** | 3.7.1 | Tablas en PDF |
+| **SweetAlert2** | 11.x | Alertas personalizadas |
+| **Font Awesome** | 6.4.0 | Iconos |
+| **Chart.js** | 3.x | Gráficos interactivos |
+
+---
+
+## 🚀 Roadmap de Mejoras
+
+### 🔜 Próximas Versiones
+
+| Prioridad | Característica | Estado |
+|---|---|---|
+| 🔴 Alta | Backend para almacenamiento en nube | ⏳ Planificado |
+| 🔴 Alta | Autenticación de usuarios | ⏳ Planificado |
+| 🟠 Media | Exportación a Excel | ⏳ Planificado |
+| 🟠 Media | Base de datos de proyectos históricos | ⏳ Planificado |
+| 🟠 Media | API REST para integraciones | ⏳ Planificado |
+| 🟡 Baja | Soporte multiidioma | ⏳ Futuro |
+| 🟡 Baja | Integración con CAD | ⏳ Futuro |
+| 🟡 Baja | Modo offline mejorado | ⏳ Futuro |
+
+---
+
+## 📞 Contacto y Soporte
+
+### 🏢 TODO GAS SYR S.A.S
+
+| Detalle | Información |
+|---|---|
+| 🏢 **Empresa** | TODO GAS SYR S.A.S |
+| 📛 **NIT** | 901.126.243-3 |
+| 📍 **Dirección** | Calle 28 N° 18-38, Tunja, Boyacá |
+| 📞 **Teléfono** | +57 301 594 9331 |
+| 🌐 **Ubicación** | Tunja, Departamento de Boyacá, Colombia |
+
+### 💬 Canales de Atención
+
+```
+📱 WhatsApp:  +57 301 594 9331
+📧 Email:     contacto@todogas.com.co
+🕐 Horario:   Lunes - Viernes 8:00 AM - 5:00 PM (Hora Colombia)
+```
+
+---
+
+## 📝 Notas de Versión
+
+### ✅ Versión 2.2.0 - Producción (Actual)
+
+```
+✅ Aplicación web completamente funcional
+✅ 9 módulos JavaScript modularizados
+✅ Cálculos termodinámicos implementados
+✅ Exportación PDF profesional
+✅ Almacenamiento local con localStorage
+✅ Interfaz responsiva y moderna
+✅ Validación multicriterio completa
+✅ Documentación técnica completa
+✅ GitHub Repository activo
+✅ Listo para producción
+```
+
+### 📦 Versión 2.1.0 (Anterior)
+
+```
+• Versión monolítica con HTML/CSS/JS integrados
+• Funcionalidad básica de cálculos
+• Interfaz inicial
+```
+
+---
+
+## 📋 Licencia
+
+© 2026 **TODO GAS SYR S.A.S** - Todos los Derechos Reservados
+
+```
+Esta aplicación es software propietario.
+No se permite su reproducción, distribución o modificación
+sin autorización expresa de TODO GAS SYR S.A.S.
+```
+
+---
+
+## 🙏 Agradecimientos
+
+Desarrollado con atención al detalle y enfoque en excelencia ingenieril para TODO GAS SYR S.A.S.
+
+---
+
+<div align="center">
+
 **Última actualización:** Enero 2026
+
+🌐 [GitHub Repository](https://github.com/LuisSilvestre95/TodoGas)
+
+**Hecho con ❤️ para profesionales del gas**
+
+</div>
